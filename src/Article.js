@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import Comments from './Comments';
 
 export default class Article extends Component {
 
 
 
     state = {
-        isOpen: false,
-        foo: 'bar'
+        isOpen: false
     };
 
     toggleOpen = ev => {
@@ -19,12 +19,13 @@ export default class Article extends Component {
         const { article } = this.props;
         const { isOpen } = this.state;
 
+
         return (
             <div>
-                <h3>{article.title}</h3>
+                <h3  onClick = {this.toggleOpen}>{article.title}</h3>
                 <section>
                     <div style = {{display: isOpen ? 'block' : 'none'}}>{article.text}<br /><br /></div>
-                    <button onClick = {this.toggleOpen}>{isOpen ? 'Hide' : 'Show more'}</button>
+                    <Comments comments={article.comments}/>
                 </section>
             </div>
         )
