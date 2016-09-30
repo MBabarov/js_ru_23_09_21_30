@@ -16,13 +16,13 @@ export default class Comments extends Component {
 
         const { comments } = this.props;
         const { isOpen } = this.state;
-        const commentsList = (comments) ? comments.map(comment => {
+        const commentsList = comments.map(comment => {
             return (
                 <div key={comment.id}>
                     { isOpen ? (<p style={{color: 'grey', paddingLeft: 20}}>{comment.text}<br /><i>{comment.user}</i></p>) : ''}
                 </div>
             )
-        }) : '';
+        });
 
         return (
             <div>

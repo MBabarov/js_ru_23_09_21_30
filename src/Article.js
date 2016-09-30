@@ -25,7 +25,7 @@ export default class Article extends Component {
                 <h3  onClick = {this.toggleOpen}>{article.title}</h3>
                 <section>
                     <div style = {{display: isOpen ? 'block' : 'none'}}>{article.text}<br /><br /></div>
-                    <Comments comments={article.comments}/>
+                    {article.comments ? <Comments comments={article.comments}/> : ''}
                 </section>
             </div>
         )
