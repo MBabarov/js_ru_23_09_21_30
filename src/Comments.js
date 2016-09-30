@@ -16,6 +16,7 @@ export default class Comments extends Component {
 
         const { comments } = this.props;
         const { isOpen } = this.state;
+        //лучше при isOpen == false вообще не показывать список, а не сами комменты внутри него прятать
         const commentsList = (comments) ? comments.map(comment => {
             return (
                 <div key={comment.id}>
