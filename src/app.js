@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import ArticleList from './ArticleList';
+import ArticlesList from './ArticlesList';
 import { articles } from './fixtures';
 
 render(
-    <ArticleList articles = {articles}/>,
+    <ArticlesList articles = {articles}/>,
     document.getElementById('container')
 );
