@@ -3,9 +3,9 @@ import CommentsList from './CommentsList';
 import {List, ListItem} from 'material-ui/List';
 
 function Article(props){
-    const { article, isOpen, openArticle } = props;
+    const { article, isOpen, openItem } = props;
     return (
-        <ListItem onClick={openArticle}>
+        <ListItem onClick={openItem}>
             <h3>{article.title}</h3>
             <section>
                 <div style = {{display: isOpen ? 'block' : 'none'}}>{article.text}<br /><br /></div>

@@ -11,11 +11,11 @@ import {List, ListItem} from 'material-ui/List';
 
 function ArticlesList(props){
 
-        const { articles, openArticle,  isOpen} = props;
+        const { articles, openItem,  isOpen} = props;
         const articleComponents = articles
             ? articles.map(article =>
                 <div key={article.id}>
-                    <Article article={article} openArticle={openArticle(article.id)} isOpen={isOpen(article.id)} />
+                    <Article article={article} openItem={openItem(article.id)} isOpen={isOpen(article.id)} />
                 </div>)
             : '';
 
@@ -33,7 +33,5 @@ function ArticlesList(props){
 ArticlesList.propTypes = {
     articles: PropTypes.array
 };
-// Вопрос - насколько корректно использовать декоратор, если для его использования,
-// например, в компненте Article необходимо использовать  обязательно определенные
-// аттрибуты такие как openArticle и isOpen для передачи id, иначе весь декоратор не будет работать
+
 export default accordionItems(ArticlesList);

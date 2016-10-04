@@ -4,17 +4,15 @@ export default function accordionItems(Component) {
     return class WrapperComponent extends React.Component{
 
         state = {
-            //Не привязывайся к названию сущности, декоратор будет использоваться везде. Назови, скажем, openItemId
-            openArticleId: null
+            openItemId: null
         };
-        openArticle = id => ev => {
-            //Но проще this.setState({openArticleId: this.state.openArticleId==id ? null : id})
-            (this.state.openArticleId==id) ? this.setState({openArticleId: null}) : this.setState({openArticleId: id})
+        openItem = id => ev => {
+            this.setState({openItemId: this.state.openItemId==id ? null : id})
         };
-        isOpen  = id  => this.state.openArticleId === id;
+        isOpen  = id  => this.state.openItemId === id;
 
         render() {
-            return <Component {...this.props}  openArticle={this.openArticle} isOpen={this.isOpen}/>
+            return <Component {...this.props}  openItem={this.openItem} isOpen={this.isOpen}/>
         }
     }
 };
