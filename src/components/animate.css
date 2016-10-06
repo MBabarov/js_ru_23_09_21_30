@@ -1,6 +1,6 @@
 .article-enter {
-    opacity: 0;
-}
+     opacity: 0;
+ }
 
 .article-enter.article-enter-active {
     opacity: 1;
@@ -12,6 +12,25 @@
 }
 
 .article-leave.article-leave-active {
+    opacity: 0;
+    transition: opacity 300ms ease-in;
+}
+
+
+.new-comment-form-enter {
+    opacity: 0;
+}
+
+.new-comment-form-enter.new-comment-form-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+}
+
+.new-comment-form-leave {
+    opacity: 1;
+}
+
+.new-comment-form-leave.new-comment-form-leave-active {
     opacity: 0;
     transition: opacity 300ms ease-in;
 }
