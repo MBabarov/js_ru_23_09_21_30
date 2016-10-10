@@ -15,6 +15,7 @@ export default (articles = defaultArticles, action) => {
                     article.isHideByFilterName = true;
                     payload.articles.some(filterArticle => {
                         if (filterArticle.value == article.id) {
+                            //мутировать данные - плохая практика
                              article.isHideByFilterName = false;
                         }
 
