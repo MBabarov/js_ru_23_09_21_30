@@ -8,16 +8,22 @@ class ArticleList extends Component {
         articles: PropTypes.array.isRequired,
         //from accordion decorator
         toggleItem: PropTypes.func.isRequired,
-        isItemOpen: PropTypes.func.isRequired
+        isItemOpen: PropTypes.func.isRequired,
+        //from articles reducer
+        isHideByFilterName: PropTypes.bool,
+        isHideByFilterPeriod: PropTypes.bool
     };
 
     render() {
         const { articles, toggleItem, isItemOpen } = this.props
-
         const articleComponents = articles.map(article => (
-            <li key={article.id} >
-                <Article article = {article} isOpen = {isItemOpen(article.id)} openArticle = {toggleItem(article.id)} />
-            </li>))
+            (!article.isHideByFilterName && !article.isHideByFilterPeriod) ?
+            (
+                <li key={article.id} >
+                    <Article article = {article} isOpen = {isItemOpen(article.id)} openArticle = {toggleItem(article.id)} />
+                </li>
+            ) : ''
+        ))
 
         return (
             <ul>

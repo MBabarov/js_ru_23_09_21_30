@@ -10,7 +10,9 @@ class Article extends Component {
     static propTypes = {
         article: PropTypes.object.isRequired,
         isOpen: PropTypes.bool.isRequired,
-        openArticle: PropTypes.func.isRequired
+        openArticle: PropTypes.func.isRequired,
+        //from articles reducer
+        deleteArticle: PropTypes.func.isRequired
     }
 
     componentDidMount() {
