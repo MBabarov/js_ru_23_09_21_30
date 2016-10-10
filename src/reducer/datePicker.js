@@ -6,6 +6,7 @@ export default (range = initialState, action) => {
     const {type, payload} = action;
     switch (type) {
         case UPDATE_RANGE:
+            //присвоение здесь лишнее + лучше объеденить этот редюсер с selected
             return range=payload;
             break;
         case RESET_RANGE:
