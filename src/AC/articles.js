@@ -1,4 +1,4 @@
-import { DELETE_ARTICLE, FILTER_ARTICLE_BY_NAME, FILTER_ARTICLE_BY_PRIOD } from '../constants'
+import { DELETE_ARTICLE, ADD_COMMENT_TO_ARTICLE } from '../constants'
 
 export function deleteArticle(id) {
     return {
@@ -7,16 +7,9 @@ export function deleteArticle(id) {
     }
 }
 
-export function filterArticleByName(articles) {
+export function addCommentToArticle(articleId, commentId) {
     return {
-        type: FILTER_ARTICLE_BY_NAME,
-        payload: { articles }
-    }
-}
-
-export function filterArticleByPeriod(period) {
-    return {
-        type: FILTER_ARTICLE_BY_PRIOD,
-        payload: { period }
+        type: ADD_COMMENT_TO_ARTICLE,
+        payload: { articleId: articleId,  commentId: commentId}
     }
 }

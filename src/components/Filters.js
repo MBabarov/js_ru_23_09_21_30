@@ -18,6 +18,4 @@ class Filter extends Component {
         )
     }
 }
-export default connect(state => ({
-    articles: state.articles
-}))(Filter)
+export default Filter

@@ -1,31 +1,34 @@
 import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
-import NewComment from './NewComment'
 import toggleOpen from './../decorators/toggleOpen'
 import NewCommentForm from './NewCommentForm'
+import { connect } from 'react-redux'
 
-function CommentList(props) {
-    const { comments, isOpen, toggleOpen } = props
-    if (!comments || !comments.length) return <div><p>No comments yet</p><NewCommentForm /></div>
-
-    const commentItems = comments.map(comment => <li key={comment.id}><Comment comment={comment}/></li>)
-    const text = isOpen ? 'hide comments' : `show ${comments.length} comments`
-    const body = isOpen && <div><ul>{commentItems}</ul><NewCommentForm /></div>
-
-    return (
-        <div>
-            <a href="#" onClick={toggleOpen}>{text}</a><br />
-            {body}
-            <NewComment />
-        </div>
-    )
+class CommentList extends Component{
+    static propTypes = {
+        //comments: PropTypes.array,
+        //form toggleOpen decorator
+        isOpen: PropTypes.bool,
+        toggleOpen: PropTypes.func
+    }
+    render (){
+        const { articleId, comments, isOpen, toggleOpen } = this.props
+        console.log('comments', comments);
+        if (!comments || !comments.length) return <div><p>No comments yet</p><NewCommentForm articleId={articleId} /></div>
+        const commentItems = comments.map(comment => <li key={comment.id}><Comment comment={comment}/></li>)
+        const text = isOpen ? 'hide comments' : `show ${comments.length} comments`
+        const body = isOpen && <div><ul>{commentItems}</ul><NewCommentForm articleId={articleId}/></div>
+        return (
+            <div>
+                <a href="#" onClick={toggleOpen}>{text}</a><br />
+                {body}
+            </div>
+        )
+    }
 }
 
-CommentList.propTypes = {
-    comments: PropTypes.array,
-    //form toggleOpen decorator
-    isOpen: PropTypes.bool,
-    toggleOpen: PropTypes.func
-}
 
-export default toggleOpen(CommentList)
+//export default toggleOpen(CommentList)
+export default connect((state, props) => ({
+    comments:  state.articles[props.articleId].comments.map(id => state.comments[id])
+}), null)(toggleOpen(CommentList))

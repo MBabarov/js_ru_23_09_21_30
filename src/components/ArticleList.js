@@ -17,13 +17,9 @@ class ArticleList extends Component {
     render() {
         const { articles, toggleItem, isItemOpen } = this.props
         const articleComponents = articles.map(article => (
-            //лучше бы просто в коннекте пофильтровать
-            (!article.isHideByFilterName && !article.isHideByFilterPeriod) ?
-            (
-                <li key={article.id} >
-                    <Article article = {article} isOpen = {isItemOpen(article.id)} openArticle = {toggleItem(article.id)} />
-                </li>
-            ) : ''
+            <li key={article.id} >
+                <Article article = {article} isOpen = {isItemOpen(article.id)} openArticle = {toggleItem(article.id)} />
+            </li>
         ))
 
         return (
@@ -34,6 +30,20 @@ class ArticleList extends Component {
     }
 }
 
-export default connect(state => ({
-    articles: state.articles
-}))(accordion(ArticleList))
+
+export default connect(state => {
+    const { articles, filters } = state
+    const articleList = Object.keys(articles).map(id => articles[id])
+    const selected = filters.get('selected')
+    const { from, to } = filters.get('dateRange')
+
+    const filteredArticles = articleList.filter(article => {
+        const published = Date.parse(article.date)
+        return (!selected.length || selected.includes(article.id)) &&
+            (!from || !to || (published > from && published < to))
+    })
+    return {
+        articles: filteredArticles
+    }
+})(accordion(ArticleList))
+

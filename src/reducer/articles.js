@@ -1,48 +1,19 @@
-import { DELETE_ARTICLE, FILTER_ARTICLE_BY_NAME, FILTER_ARTICLE_BY_PRIOD } from '../constants'
-import { articles as defaultArticles } from '../fixtures'
-import moment from 'moment'
+import { DELETE_ARTICLE, ADD_NEW_COMMENT } from '../constants'
+import { normalizedArticles } from '../fixtures'
+import { arrayToMap } from '../store/helpers'
 
-export default (articles = defaultArticles, action) => {
+export default (articles = arrayToMap(normalizedArticles), action) => {
     const { type, payload } = action
     switch (type) {
         case DELETE_ARTICLE:
-            return articles.filter(article => article.id != payload.id)
+            return Object.keys(articles)
+                .filter(id => id != payload.id)
+                .reduce((acc, id) => ({...acc, [id]: articles[id]}), {})
             break;
-
-        case FILTER_ARTICLE_BY_NAME:
-            if(payload.articles.length){
-                articles.forEach(article => {
-                    article.isHideByFilterName = true;
-                    payload.articles.some(filterArticle => {
-                        if (filterArticle.value == article.id) {
-                            //мутировать данные - плохая практика
-                             article.isHideByFilterName = false;
-                        }
-
-                    })
-                })
-            }
-            else {
-                articles.forEach(article => (
-                    article.isHideByFilterName = false
-                ))
-            }
-            return articles  =  Object.assign([], articles);
+        case ADD_NEW_COMMENT:
+            articles[payload.articleId].comments.push(payload.id)
+            return Object.assign({}, articles)
             break;
-
-        case FILTER_ARTICLE_BY_PRIOD:
-            if(payload.period.from && payload.period.to){
-                articles.forEach(article => {
-                    moment(article.date).isBetween(payload.period.from, payload.period.to, null, '[]') ?  article.isHideByFilterPeriod = false : article.isHideByFilterPeriod = true;
-                })
-            }
-            else{
-                articles.forEach(article => (
-                    article.isHideByFilterPeriod = false
-                ))
-            }
-            return articles  =  Object.assign([], articles);
-            break
     }
     return articles
 }
