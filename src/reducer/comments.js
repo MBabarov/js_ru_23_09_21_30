@@ -31,7 +31,7 @@ export default (comments = defaultState, action) => {
                 .set('entities', arrayToMap(response.records, comment => new CommentModel(comment)))
                 .set('loading', false)
                 .set('loaded', true)
-
+        //Здесь плохо подходит такое обозначение, поскольку ты загружаешь не все комменты. Стоит хранить для какой статьи идет загрузка
         case LOAD_CURRENT_COMMENTS + START:
             return comments.setIn(['loading'], true)
 
