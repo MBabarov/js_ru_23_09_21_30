@@ -19,10 +19,12 @@ class DatePicker extends Component {
             <div className="date-range">
                 <DayPicker
                     ref="daypicker"
-                    selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
+                    initialMonth={ new Date(2016, 5) }
+                    selectedDays={ day => DateUtils.isDayInRange(day,  { from, to } ) }
                     onDayClick={ this.handleDayClick }
                 />
                 {selectedRange}
+
             </div>
         );
     }
@@ -32,3 +34,4 @@ class DatePicker extends Component {
 export default connect(state => ({
     range: state.filters.get('dateRange')
 }), { changeDateRange })(DatePicker)
+

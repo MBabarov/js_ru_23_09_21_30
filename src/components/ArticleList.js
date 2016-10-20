@@ -10,7 +10,10 @@ class ArticleList extends Component {
         articles: PropTypes.array.isRequired,
         //from accordion decorator
         toggleItem: PropTypes.func.isRequired,
-        isItemOpen: PropTypes.func.isRequired
+        isItemOpen: PropTypes.func.isRequired,
+        //from articles reducer
+        isHideByFilterName: PropTypes.bool,
+        isHideByFilterPeriod: PropTypes.bool
     };
 
     componentDidMount() {
@@ -22,11 +25,11 @@ class ArticleList extends Component {
         const { articles, loading, toggleItem, isItemOpen } = this.props
 
         if (loading) return <Loader />
-
         const articleComponents = articles.map(article => (
             <li key={article.id} >
                 <Article article = {article} isOpen = {isItemOpen(article.id)} openArticle = {toggleItem(article.id)} />
-            </li>))
+            </li>
+        ))
 
         return (
             <ul>
@@ -35,6 +38,7 @@ class ArticleList extends Component {
         )
     }
 }
+
 
 export default connect(state => {
     const { articles, filters } = state

@@ -11,7 +11,9 @@ class Article extends Component {
     static propTypes = {
         article: PropTypes.object.isRequired,
         isOpen: PropTypes.bool.isRequired,
-        openArticle: PropTypes.func.isRequired
+        openArticle: PropTypes.func.isRequired,
+        //from articles reducer
+        deleteArticle: PropTypes.func.isRequired
     }
 
     componentWillReceiveProps(nextProps) {
@@ -21,7 +23,6 @@ class Article extends Component {
 
     render() {
         const { article, isOpen, openArticle } = this.props
-
         const loader = article.loading ? <Loader /> : null
         const body = isOpen ? <section>{loader}{article.text}<CommentList article = {article} ref = "commentList"/></section> : null
 

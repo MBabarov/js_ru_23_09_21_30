@@ -18,7 +18,6 @@ const defaultState = new Map({
     loaded: false
 })
 
-// arrayToMap(normalizedArticles, article => new ArticleModel(article))
 export default (articles = defaultState, action) => {
     const { type, payload, generatedId, response } = action
 
