@@ -1,31 +1,38 @@
 import React, { Component, PropTypes } from 'react'
 import Comment from './Comment'
 import toggleOpen from './../decorators/toggleOpen'
-import Loader from './Loader'
 import NewCommentForm from './NewCommentForm'
+import Loader from './Loader'
 import { connect } from 'react-redux'
 import { getRelation } from '../store/helpers'
-import { addComment, loadAllComments, loadCurrentComments } from '../AC/comments'
+import { addComment, loadCommentsForArticle } from '../AC/comments'
 
-class CommentList extends Component{
+class CommentList extends Component {
+    static propTypes = {
+        comments: PropTypes.array,
+        //form toggleOpen decorator
+        isOpen: PropTypes.bool,
+        toggleOpen: PropTypes.func
+    }
 
-    componentWillReceiveProps(nextProps) {
-        const { isOpen, loading, loadCurrentComments, article: { id } } = this.props
-
-        if (nextProps.isOpen && !isOpen  && !loading) loadCurrentComments(id)
+    componentWillReceiveProps({ article: { id, commentsLoading, commentsLoaded }, isOpen, loadCommentsForArticle }) {
+        if (isOpen && !this.props.isOpen && !commentsLoaded && !commentsLoading) loadCommentsForArticle(id)
     }
 
     render() {
-        const { article, comments, loading, addComment, isOpen, toggleOpen } = this.props
-        if (!article.comments || !article.comments.length) return <div>
+        const { article, comments, addComment, isOpen, toggleOpen } = this.props
+        if (!comments || !comments.length) return <div>
             <p>No comments yet</p>
-            <NewCommentForm articleId = {article.id} addComment = {addComment}/>
+            <NewCommentForm articleId={article.id} addComment={addComment}/>
         </div>
-        const commentView = !loading ? <ul>{comments.map(comment => <li key={comment.id}><Comment comment={comment}/></li>)}</ul> : <Loader />
-        const text = isOpen ? 'hide comments' : `show ${article.comments.length} comments`
+
+        const commentItems = article.commentsLoaded && comments.map(comment => <li key={comment.id}><Comment comment={comment}/></li>)
+        const text = isOpen ? 'hide comments' : `show ${comments.length} comments`
+        const content = article.commentsLoading || !article.commentsLoaded ? <Loader /> : <ul>{commentItems}</ul>
+
         const body = isOpen && <div>
-                {commentView}
-                <NewCommentForm articleId = {article.id} addComment = {addComment}/>
+                {content}
+                <NewCommentForm articleId={article.id} addComment={addComment}/>
             </div>
 
         return (
@@ -38,7 +45,5 @@ class CommentList extends Component{
 }
 
 export default connect((state, props) => ({
-    comments: state.comments.get('entities').toArray(),  //getRelation(props.article, 'comments', state.comments.get('entities').valueSeq().toArray())
-    loading: state.comments.get('loading'),
-    loaded: state.comments.get('loaded')
-}), { addComment, loadAllComments, loadCurrentComments })(toggleOpen(CommentList))
+    comments: getRelation(props.article, 'comments', state)
+}), { addComment, loadCommentsForArticle })(toggleOpen(CommentList))

@@ -1,4 +1,4 @@
-import { ADD_COMMENT, LOAD_CURRENT_COMMENTS, LOAD_ALL_COMMENT, START, SUCCESS } from '../constants'
+import { ADD_COMMENT, LOAD_COMMENTS_FOR_ARTICLE, START, SUCCESS } from '../constants'
 import $ from 'jquery'
 
 export function addComment(comment, articleId) {
@@ -10,37 +10,28 @@ export function addComment(comment, articleId) {
         generateId: true
     }
 }
-
-export function loadAllComments() {
+export function loadCommentsForArticle(articleId) {
     return {
-        type: LOAD_ALL_COMMENT,
-        callAPI: '/api/comment'
+        type: LOAD_COMMENTS_FOR_ARTICLE,
+        payload: { articleId },
+        callAPI: `/api/comment?article=${articleId}`
     }
 }
 
-
-export function loadCurrentComments(aricleId) {
-    return {
-        type: LOAD_CURRENT_COMMENTS,
-        callAPI: `api/comment?article=${aricleId}`,
-        payload: { aricleId }
-    }
-}
-
-export function loadCurrentComments_2(aricleId) {
+/*
+export function loadCommentsForArticle(articleId) {
     return (dispatch) => {
         dispatch({
-            type: LOAD_CURRENT_COMMENTS + START,
-            payload: { aricleId }
+            type: LOAD_COMMENTS_FOR_ARTICLE + START,
+            payload: { articleId }
         })
 
-        setTimeout(() => {
-            $.get( `api/comment?article=${aricleId}`)
-                .done(response => dispatch({
-                    type: LOAD_CURRENT_COMMENTS + SUCCESS,
-                    payload: { aricleId },
-                    response
-                }))
-        }, 1000)
+        $.get(`/api/comment?article=${articleId}`)
+            .done(response => dispatch({
+                type: LOAD_COMMENTS_FOR_ARTICLE + SUCCESS,
+                payload: { articleId },
+                response
+            }))
     }
 }
+*/

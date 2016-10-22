@@ -1,8 +1,6 @@
-import { normalizedComments } from '../fixtures'
 import { arrayToMap } from '../store/helpers'
-import { ADD_COMMENT, LOAD_ALL_COMMENT, LOAD_CURRENT_COMMENTS, START, SUCCESS } from '../constants'
+import { ADD_COMMENT, LOAD_COMMENTS_FOR_ARTICLE, SUCCESS } from '../constants'
 import { Record, Map } from 'immutable'
-
 
 const CommentModel = Record({
     id: null,
@@ -11,9 +9,7 @@ const CommentModel = Record({
 })
 
 const defaultState = new Map({
-    entities: new Map({}), //arrayToMap(normalizedComments, comment => new CommentModel(comment)),
-    loading: false,
-    loaded: false
+    entities: new Map({})
 })
 
 export default (comments = defaultState, action) => {
@@ -23,22 +19,11 @@ export default (comments = defaultState, action) => {
         case ADD_COMMENT:
             return comments.setIn(['entities', generatedId], new CommentModel({...payload.comment, id: generatedId}))
 
-        case LOAD_ALL_COMMENT:
-            return comments.set('loading', true)
-
-        case LOAD_ALL_COMMENT + SUCCESS:
-            return comments
-                .set('entities', arrayToMap(response.records, comment => new CommentModel(comment)))
-                .set('loading', false)
-                .set('loaded', true)
-        //Здесь плохо подходит такое обозначение, поскольку ты загружаешь не все комменты. Стоит хранить для какой статьи идет загрузка
-        case LOAD_CURRENT_COMMENTS + START:
-            return comments.setIn(['loading'], true)
-
-        case LOAD_CURRENT_COMMENTS + SUCCESS:
-            return comments
-                .setIn(['loading'], false)
-                .setIn(['entities'], arrayToMap(response, comment => new CommentModel(comment)))
+        case LOAD_COMMENTS_FOR_ARTICLE + SUCCESS:
+            return comments.update('entities', entities =>
+                entities.merge(arrayToMap(response, comment => new CommentModel(comment)))
+            )
     }
+
     return comments
 }
